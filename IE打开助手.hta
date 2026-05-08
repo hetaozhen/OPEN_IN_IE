@@ -1,0 +1,137 @@
+<html>
+<head>
+<title>IE打开助手</title>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<hta:application 
+    id="oHTA"
+    icon="shell32.dll,16" 
+    border="thin"
+    caption="yes"
+    showintaskbar="yes"
+    singleinstance="yes"
+    sysmenu="yes"
+    windowstate="normal"
+    scroll="no"
+>
+
+<style>
+    /* 全局强制标准：所有交互元素高度对齐 */
+    * { box-sizing: border-box; }
+    
+    body { 
+        font-family: "Microsoft YaHei", "微软雅黑", sans-serif; 
+        background: #f0f2f5; 
+        padding: 20px; 
+        text-align: center; 
+        margin: 0;
+    }
+
+    h2 { 
+        color: #333; 
+        font-size: 18px; 
+        margin: 0 0 20px 0; 
+        font-weight: bold;
+    }
+    
+    /* 1. 网站按钮：统一样式 */
+    .btn { 
+        display: block; 
+        width: 100%; 
+        height: 42px;         /* 统一高度 */
+        line-height: 42px;
+        margin: 10px 0;
+        background: #0078d7; 
+        color: white; 
+        border: none; 
+        border-radius: 4px; 
+        font-size: 15px;      /* 字号稍微放大 */
+        cursor: pointer;
+        padding: 0;
+    }
+    .btn:hover { background: #005a9e; }
+
+    /* 2. 底部输入区域 */
+    .footer { 
+        margin-top: 25px; 
+        padding-top: 20px; 
+        border-top: 1px solid #ddd; 
+        display: block;
+        white-space: nowrap;
+    }
+
+    /* 输入框：高度与 .btn 一致 */
+    .custom-input { 
+        width: 215px; 
+        height: 42px;           /* 核心修改：高度设为 42px */
+        line-height: 42px; 
+        padding: 0 12px; 
+        border: 2px solid #bbb;  /* 加粗边框更有质感 */
+        border-right: none;      
+        border-radius: 6px 0 0 6px; 
+        font-size: 14px;
+        vertical-align: middle;  
+        outline: none;
+    }
+    .custom-input:focus { border-color: #0078d7; }
+    
+    /* 前往按钮：高度与 .btn 一致，宽度放大 */
+    .go-btn { 
+        width: 75px;            /* 宽度稍微加大，更醒目 */
+        height: 42px;           /* 核心修改：高度设为 42px */
+        background: #28a745; 
+        color: white; 
+        border: 2px solid #28a745; 
+        border-radius: 0 6px 6px 0; 
+        cursor: pointer; 
+        vertical-align: middle; 
+        font-size: 15px;        /* 字号与上方按钮一致 */
+        font-weight: bold;
+        margin: 0;
+        padding: 0;
+    }
+    .go-btn:hover { background: #218838; border-color: #218838; }
+</style>
+
+<script language="VBScript">
+    ' 窗口尺寸微调，确保能容纳更大的组件
+    Sub Window_OnLoad
+        window.resizeTo 360, 560
+    End Sub
+
+    Sub LaunchAndClose(url)
+        If url = "" Or url = "https://" Then Exit Sub
+        On Error Resume Next
+        Set objIE = CreateObject("InternetExplorer.Application")
+        objIE.Visible = True
+        objIE.Navigate url
+        window.close
+    End Sub
+
+    Sub LaunchCustom()
+        u = document.getElementById("customUrl").value
+        If u <> "" And u <> "https://" Then
+            If InStr(u, "://") = 0 Then u = "https://" & u
+            LaunchAndClose u
+        End If
+    End Sub
+
+    Sub document_onkeydown()
+        If window.event.keyCode = 13 Then LaunchCustom
+    End Sub
+</script>
+</head>
+
+<body>
+    <h2>从IE打开以下网站</h2>
+    
+    <button class="btn" onclick="LaunchAndClose 'https://www.gx966888.com/'">广西农商联合银行</button>
+    <button class="btn" onclick="LaunchAndClose 'https://icbc.com.cn/'">中国工商银行</button>
+    <button class="btn" onclick="LaunchAndClose 'https://www.abchina.com/cn/'">中国农业银行</button>
+    <button class="btn" onclick="LaunchAndClose 'https://guilin.beeb.com.cn/'">桂林国民村镇银行</button>
+    <button class="btn" onclick="LaunchAndClose 'https://www.guilinbank.com.cn/'">桂林银行</button>
+
+    <div class="footer">
+        <input type="text" id="customUrl" class="custom-input" value="https://"><button class="go-btn" onclick="LaunchCustom()">前往</button>
+    </div>
+</body>
+</html>
